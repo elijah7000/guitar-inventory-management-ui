@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .formGuitar {
+        width: 100%;
+        height: 50vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      .displayInfo {
+        height: 50vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="formGuitar">
+      <labe>Builder:</labe>
+      <input id="builder" />
+      <labe>Model:</labe>
+      <input id="model" />
+      <labe>Type:</labe>
+      <input id="type" />
+      <labe>Black Wood:</labe>
+      <input id="blackWood" />
+      <labe>Top Wood:</labe>
+      <input id="topWood" />
+      <button onclick="search()" style="margin-top: 20px">Search</button>
+    </div>
+    <div class="displayInfo">
+      <table>
+        <thead>
+          <tr>
+            <th>Builder</th>
+            <th>Model</th>
+            <th>Type</th>
+            <th>BlackWood</th>
+            <th>TopWood</th>
+          </tr>
+        </thead>
+        <tbody id="result"></tbody>
+      </table>
+    </div>
+
+    <script>
+      let guitars = [
+        {
+          Builder: "Yamaha",
+          Model: "Y22",
+          Type: "classical",
+          Black_Wood: "yes",
+          Top_Wood: "yes",
+        },
+        {
+          Builder: "Fender",
+          Model: "A22",
+          Type: "jazz",
+          Black_Wood: "yes",
+          Top_Wood: "No",
+        },
+        {
+          Builder: "Jackson",
+          Model: "Z22",
+          Type: "electric",
+          Black_Wood: "No",
+          Top_Wood: "yes",
+        },
+        {
+          Builder: "Yamaha",
+          Model: "C22",
+          Type: "telecaster",
+          Black_Wood: "No",
+          Top_Wood: "yes",
+        },
+        {
+          Builder: "Fender",
+          Model: "K22",
+          Type: "classical",
+          Black_Wood: "yes",
+          Top_Wood: "no",
+        },
+      ];
+
+      function search() {
+        let guitarBuilder = document
+          .getElementById("builder")
+          .value.toLowerCase();
+        let guitarModel = document.getElementById("model").value.toLowerCase();
+        let guitarType = document.getElementById("type").value.toLowerCase();
+        let guitarBlackWood = document
+          .getElementById("blackWood")
+          .value.toLowerCase();
+        let guitarTopWood = document
+          .getElementById("topWood")
+          .value.toLowerCase();
+        let table = document.getElementById("result");
+        table.innerHTML = "";
+
+        for (let guitar of guitars) {
+          if (
+            (!guitarBuilder ||
+              guitar.Builder.toLowerCase().includes(guitarBuilder)) &&
+            (!guitarModel ||
+              guitar.Model.toLowerCase().includes(guitarModel)) &&
+            (!guitarType || guitar.Type.toLowerCase().includes(guitarType)) &&
+            (!guitarBlackWood ||
+              guitar.Black_Wood.toLowerCase().includes(guitarBlackWood)) &&
+            (!guitarTopWood ||
+              guitar.Top_Wood.toLowerCase().includes(guitarTopWood))
+          ) {
+            let row = document.createElement("tr");
+            let cell1 = document.createElement("td");
+            cell1.textContent = guitar.Builder;
+            row.appendChild(cell1);
+            let cell2 = document.createElement("td");
+            cell2.textContent = guitar.Model;
+            row.appendChild(cell2);
+            let cell3 = document.createElement("td");
+            cell3.textContent = guitar.Type;
+            row.appendChild(cell3);
+            let cell4 = document.createElement("td");
+            cell4.textContent = guitar.Black_Wood;
+            row.appendChild(cell4);
+            let cell5 = document.createElement("td");
+            cell5.textContent = guitar.Top_Wood;
+            row.appendChild(cell5);
+            table.appendChild(row);
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
