@@ -24,15 +24,15 @@
   </head>
   <body>
     <div class="formGuitar">
-      <labe>Builder:</labe>
+      <label>Builder:</label>
       <input id="builder" />
-      <labe>Model:</labe>
+      <label>Model:</label>
       <input id="model" />
-      <labe>Type:</labe>
+      <label>Type:</label>
       <input id="type" />
-      <labe>Black Wood:</labe>
-      <input id="blackWood" />
-      <labe>Top Wood:</labe>
+      <label>Back Wood:</label>
+      <input id="backWood" />
+      <label>Top Wood:</label>
       <input id="topWood" />
       <button onclick="search()" style="margin-top: 20px">Search</button>
     </div>
@@ -43,7 +43,7 @@
             <th>Builder</th>
             <th>Model</th>
             <th>Type</th>
-            <th>BlackWood</th>
+            <th>BackWood</th>
             <th>TopWood</th>
           </tr>
         </thead>
@@ -52,52 +52,31 @@
     </div>
 
     <script>
-      let guitars = [
-        {
-          Builder: "Yamaha",
-          Model: "Y22",
-          Type: "classical",
-          Black_Wood: "yes",
-          Top_Wood: "yes",
-        },
-        {
-          Builder: "Fender",
-          Model: "A22",
-          Type: "jazz",
-          Black_Wood: "yes",
-          Top_Wood: "No",
-        },
-        {
-          Builder: "Jackson",
-          Model: "Z22",
-          Type: "electric",
-          Black_Wood: "No",
-          Top_Wood: "yes",
-        },
-        {
-          Builder: "Yamaha",
-          Model: "C22",
-          Type: "telecaster",
-          Black_Wood: "No",
-          Top_Wood: "yes",
-        },
-        {
-          Builder: "Fender",
-          Model: "K22",
-          Type: "classical",
-          Black_Wood: "yes",
-          Top_Wood: "no",
-        },
-      ];
+      let guitars = [];
+      let host = "http://localhost:5050";
 
-      function search() {
+      async function getAll() {
+        return fetch(host + "/guitars/getall")
+          .then((response) => response.json())
+          .catch((error) => {
+            console.log(error);
+            alert("Something went wrong!");
+            return [];
+          });
+      }
+
+      async function search() {
+        if (guitars.length == 0) {
+          guitars = await getAll();
+        }
+
         let guitarBuilder = document
           .getElementById("builder")
           .value.toLowerCase();
         let guitarModel = document.getElementById("model").value.toLowerCase();
         let guitarType = document.getElementById("type").value.toLowerCase();
-        let guitarBlackWood = document
-          .getElementById("blackWood")
+        let guitarBackWood = document
+          .getElementById("backWood")
           .value.toLowerCase();
         let guitarTopWood = document
           .getElementById("topWood")
@@ -108,30 +87,40 @@
         for (let guitar of guitars) {
           if (
             (!guitarBuilder ||
-              guitar.Builder.toLowerCase().includes(guitarBuilder)) &&
+              guitar.builder.toLowerCase().includes(guitarBuilder)) &&
             (!guitarModel ||
-              guitar.Model.toLowerCase().includes(guitarModel)) &&
-            (!guitarType || guitar.Type.toLowerCase().includes(guitarType)) &&
-            (!guitarBlackWood ||
-              guitar.Black_Wood.toLowerCase().includes(guitarBlackWood)) &&
+              guitar.model.toLowerCase().includes(guitarModel)) &&
+            (!guitarType || guitar.type.toLowerCase().includes(guitarType)) &&
+            (!guitarBackWood ||
+              guitar.backWood.toLowerCase().includes(guitarBackWood)) &&
             (!guitarTopWood ||
-              guitar.Top_Wood.toLowerCase().includes(guitarTopWood))
+              guitar.topWood.toLowerCase().includes(guitarTopWood))
           ) {
             let row = document.createElement("tr");
             let cell1 = document.createElement("td");
-            cell1.textContent = guitar.Builder;
+            cell1.textContent = guitar.builder;
+            console.log((cell1.textContent = guitar.builder));
+            console.log(1);
             row.appendChild(cell1);
             let cell2 = document.createElement("td");
-            cell2.textContent = guitar.Model;
+            cell2.textContent = guitar.model;
+            console.log((cell2.textContent = guitar.model));
+            console.log(2);
             row.appendChild(cell2);
             let cell3 = document.createElement("td");
-            cell3.textContent = guitar.Type;
+            cell3.textContent = guitar.type;
+            console.log((cell3.textContent = guitar.type));
+            console.log(3);
             row.appendChild(cell3);
             let cell4 = document.createElement("td");
-            cell4.textContent = guitar.Black_Wood;
+            cell4.textContent = guitar.backWood;
+            console.log((cell4.textContent = guitar.backWood));
+            console.log(4);
             row.appendChild(cell4);
             let cell5 = document.createElement("td");
-            cell5.textContent = guitar.Top_Wood;
+            cell5.textContent = guitar.topWood;
+            console.log((cell5.textContent = guitar.topWood));
+            console.log(5);
             row.appendChild(cell5);
             table.appendChild(row);
           }

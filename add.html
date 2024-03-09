@@ -35,7 +35,7 @@
       <label>Type:</label>
       <input id="type" />
       <label>Black Wood:</label>
-      <input id="blackWood" />
+      <input id="backWood" />
       <label>Top Wood:</label>
       <input id="topWood" />
       <button onclick="addGuitar()" style="margin-top: 10px">Add Guitar</button>
@@ -53,31 +53,48 @@
     </div>
 
     <script>
-      let guitar = [];
+      let host = "http://localhost:5050";
 
-      function addGuitar() {
-        const serialNumber = document.getElementById("serialNumber").value;
-        const price = document.getElementById("price").value;
-        const builder = document.getElementById("builder").value;
-        const model = document.getElementById("model").value;
-        const type = document.getElementById("type").value;
-        const blackWood = document.getElementById("blackWood").value;
-        const topWood = document.getElementById("topWood").value;
-
-        const newGuitar = {
-          serialNumber,
-          price,
-          builder,
-          model,
-          type,
-          blackWood,
-          topWood,
+      async function addGuitar() {
+        let message = "";
+        let wserialNumber = document
+          .getElementById("serialNumber")
+          .value.toUpperCase();
+        let wprice = document.getElementById("price").value.toUpperCase();
+        let wbuilder = document.getElementById("builder").value.toUpperCase();
+        let wmodel = document.getElementById("model").value.toUpperCase();
+        let wtype = document.getElementById("type").value.toUpperCase();
+        let wbackwood = document.getElementById("backWood").value.toUpperCase();
+        let wtopWood = document.getElementById("topWood").value.toUpperCase();
+        let guitar = {
+          serialNumber: wserialNumber,
+          price: wprice,
+          builder: wbuilder,
+          model: wmodel,
+          type: wtype,
+          backWood: wbackwood,
+          topWood: wtopWood,
         };
 
-        guitar.push(newGuitar);
+        alert("You've entered" + JSON.stringify(guitar));
 
-        // Display JSON data in a popup message
-        alert(JSON.stringify(newGuitar));
+        let request = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(guitar),
+        };
+
+        let response = await fetch(host + "/guitars/add", request);
+
+        if (response.status == 200) {
+          message = "Saved Correctly";
+        } else {
+          console.log(response);
+          message = "Something went wrong! guitar data could not be saved.";
+        }
+        alert(message);
       }
     </script>
   </body>
